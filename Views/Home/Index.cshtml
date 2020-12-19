@@ -1,0 +1,53 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Endterm.Models; 
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Fetch VIP applications from OLX <a href="https://olx.kz"> and add them to database</a>.</p>
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <div class="d-flex align-items-center justify-content-center">
+            <form method="post" asp-action="Fetch" asp-controller="Home">
+                <button type="submit" class="btn btn-primary">SCRAP DATA FROM OLX!</button>
+            </form>
+        </div>
+
+        <div class="d-flex justify-content-center mt-5">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Url</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.Items)
+                    {
+                        <tr>
+                            <th scope="row">@item.ItemId</th>
+                            <td><a href="@item.ItemUrl">Link</a></td>
+                            <td>@item.Name</td>
+                            <td>@item.Descriptipn</td>
+                            <td>@item.Price</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+
+    }
+    else
+    {
+        <p class="text-alert">YOU ARE NOT SIGNED IN PLEASE LOGIN TO SEE AND FETCH OLX TOP 16 items.</p>
+    }
+</div>
